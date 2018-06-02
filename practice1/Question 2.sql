@@ -26,3 +26,17 @@ select count(*)
 From Teaches as T
 Group By T.dept, T.number
 having username != null;
+
+--Which instructors teach more than 1 class? Give the username, first name, and last name of
+--these instructors.
+
+With Nosingle as(
+  select T.username as user
+  From Teaches as T
+  Group By username
+  Having count(*) < 2
+)
+select I.username, I.fname, I.lname
+From Nosingle as n, Instructor as I
+Where I.username not in (select n2.user
+  From NoSingle as n2);
