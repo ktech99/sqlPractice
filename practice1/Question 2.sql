@@ -40,3 +40,22 @@ select I.username, I.fname, I.lname
 From Nosingle as n, Instructor as I
 Where I.username not in (select n2.user
   From NoSingle as n2);
+
+--.	Which	CSE	courses	do	neither	Dr.	Levy (‘levy’) nor	Dr.	Wetherall (‘djw’) teach?	Give	the
+--department,	number,	and	title	of	these	courses.
+
+with doTeach As(
+  Select C.dept dep, C.number num
+  From Class As C, Teaches as T, Instructor as I
+  where T.dept = C.dept
+    And T.number = C.number
+    And T.username = I.username
+    And (I.username = 'levy' | I.username = 'djw')
+)
+
+Select C.dept, C.number, C.title
+From Class as C
+where C.dept not in (select doTeach.dep
+    From doTeach)
+  And C.number not in (select doTeach.num
+    From doTeach);
