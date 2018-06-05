@@ -27,3 +27,11 @@ Where s1.bar = F.bar
   And S2.beer = 'bud';
 Group by F.bar;
 -- * for each bar that serve 'heineken' count the number of drinkers that frequent that bar and that like 'bud'
+
+Select S.bar, count(distinct F.drinker)
+From Likes as L, Frequents as F, Serves as S
+Where L.beer = 'bud'
+  And F.drinker = L.drinker
+  And F.bar = S.bar
+  And S.serve = 'heineken'
+Group By s.bar;
